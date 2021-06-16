@@ -25,16 +25,18 @@ def iiif_image_key(obj):
         bucket_id = obj.bucket_id
         version_id = obj.version_id
         key = obj.key
-    else:
-        bucket_id = obj.get('bucket')
-        version_id = obj.get('version_id')
-        key = obj.get('key')
-    return u'{}:{}:{}'.format(
-        bucket_id,
-        version_id,
-        key,
-    )
-
+        return u'{}:{}:{}'.format(
+            bucket_id,
+            version_id,
+            key,
+        )
+    else: # local quick fix - assume its an rdm_records FileItem, see issue #43
+        record_id=obj._record['id']
+        file_id=obj.file_id
+        return u'{}:{}'.format(
+            record_id,
+            file_id
+        )
 
 def ui_iiif_image_url(obj, version='v2', region='full', size='full',
                       rotation=0, quality='default', image_format='png'):
